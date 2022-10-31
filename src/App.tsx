@@ -1,10 +1,11 @@
 import { useEffect, useState, FC } from 'react';
 import { CssBaseline } from '@mui/material';
 import { AppBar, ControllerGrid, EntryGrid, FieldGrid, FlexBox, MainContainer } from './components';
-import { useHTTPClient } from './contexts/http-client';
+import { useHTTPClient, usePlayer } from './contexts';
 
 const App: FC = () => {
   const httpClient = useHTTPClient();
+  const [player] = usePlayer();
   const [world, setWorld] = useState<string>();
 
   useEffect(() => {
@@ -20,8 +21,7 @@ const App: FC = () => {
       <AppBar />
       <MainContainer>
         <FieldGrid>{world}</FieldGrid>
-        <ControllerGrid />
-        <EntryGrid />
+        {player ? <ControllerGrid /> : <EntryGrid />}
       </MainContainer>
     </FlexBox>
   );

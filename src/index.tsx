@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom/client';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
-import { HTTPClientProvider } from './contexts/http-client';
+import { HTTPClientProvider, PlayerProvider } from './contexts';
 import { apiHost } from './lib/config';
 
 const root = ReactDOM.createRoot(
@@ -12,7 +12,9 @@ const root = ReactDOM.createRoot(
 root.render(
   <StrictMode>
     <HTTPClientProvider baseURL={apiHost}>
-      <App />
+      <PlayerProvider>
+        <App />
+      </PlayerProvider>
     </HTTPClientProvider>
   </StrictMode>
 );
