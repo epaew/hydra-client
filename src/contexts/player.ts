@@ -24,3 +24,4 @@ const PlayerProvider: FC<PlayerProviderProps> = ({ children }) => {
 const usePlayer = () => useContext(context);
 
 export { PlayerProvider, usePlayer };
+export type { Player };
