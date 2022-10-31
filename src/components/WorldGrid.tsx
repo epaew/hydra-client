@@ -1,46 +1,50 @@
-import { useEffect, useState, FC } from 'react';
-import { Grid, Paper } from '@mui/material';
+import { useState, FC } from 'react';
+import { Box, Grid, Paper, TextField, ToggleButton } from '@mui/material';
 import styled from '@emotion/styled';
 
-import { useHTTPClient, HTTPClient } from '../contexts';
+import { useTextWorld } from '../hooks';
 
-interface WorldProps {
-  refreshInterval: number
-}
 interface WorldGridProps {
-  refreshInterval: number
+  refreshInterval: number;
 }
 
-const getCurrentWorld = async (httpClient: HTTPClient): Promise<string> => {
-  const res = await httpClient.get('/api/world.text', { headers: { Accept: 'text/plain' } });
-  return res.text();
-};
 const Field = styled.pre({
   fontFamily: 'Monaco, monospace',
 });
 
-const World: FC<WorldProps> = ({ refreshInterval }) => {
-  const httpClient = useHTTPClient();
-  const [world, setWorld] = useState<string>();
+const WorldGrid: FC<WorldGridProps> = () => {
+  const [autoRefresh, setAutoRefresh] = useState<boolean>(true);
+  const [refreshInterval, setRefreshInterval] = useState<number>(1.0);
+  const world = useTextWorld({ autoRefresh, refreshInterval });
 
-  useEffect(() => {
-    const timer = setInterval(
-      async () => {
-        setWorld(await getCurrentWorld(httpClient));
-      },
-      refreshInterval * 1000,
-    )
-    return () => clearInterval(timer);
-  }, [httpClient, refreshInterval]);
-
-  return <Field>{world}</Field>;
-};
-
-const WorldGrid: FC<WorldGridProps> = ({ refreshInterval }) => {
   return (
     <Grid item xs={12}>
       <Paper sx={{ display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
-        <World refreshInterval={refreshInterval} />
+        <Field>{world}</Field>
+        <Box>
+          <TextField
+            id="refreshInterval"
+            name="refreshInterval"
+            label="更新間隔（秒）"
+            type="number"
+            size="small"
+            variant="standard"
+            inputProps={{ step: 0.1, min: 0.1 }}
+            defaultValue={refreshInterval}
+            onChange={e => {
+              e.target.checkValidity() && setRefreshInterval(parseFloat(e.target.value) || 0);
+            }}
+          />
+          <ToggleButton
+            value='autoRefresh'
+            color='primary'
+            selected={autoRefresh}
+            onChange={() => setAutoRefresh(!autoRefresh)}
+            sx={{ ml: 1 }}
+          >
+            {autoRefresh ? '自動更新：有効' : '自動更新：無効'}
+          </ToggleButton>
+        </Box>
       </Paper>
     </Grid>
   );
