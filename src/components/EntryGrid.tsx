@@ -1,13 +1,21 @@
-import { FC, FormEventHandler } from 'react';
+import { useState, FC, FormEventHandler } from 'react';
 import { Box, Button, Grid, Paper, TextField } from '@mui/material';
+import { usePlayer } from '../contexts';
 
-interface EntryGridProps {
-}
+interface EntryGridProps {}
 
 const EntryGrid: FC<EntryGridProps> = () => {
+  const [playerName, setPlayerName] = useState<string>();
+  const [password, setPassword] = useState<string>();
+  const [player, setPlayer] = usePlayer();
+
+  if (player) { return null; }
+
   const onSubmit: FormEventHandler<HTMLFormElement> = e => {
     e.preventDefault();
-    console.log(e);
+    if (!(!!playerName && !!password)) { return; }
+
+    setPlayer({ name: playerName, password });
   };
 
   return (
@@ -22,6 +30,7 @@ const EntryGrid: FC<EntryGridProps> = () => {
             required
             size="small"
             variant="standard"
+            onChange={e => setPlayerName(e.target.value)}
           />
           <TextField
             id="password"
@@ -31,6 +40,7 @@ const EntryGrid: FC<EntryGridProps> = () => {
             required
             size="small"
             variant="standard"
+            onChange={e => setPassword(e.target.value)}
           />
           <Button type="submit" variant="contained" sx={{ ml: 1 }}>Entry</Button>
         </Box>

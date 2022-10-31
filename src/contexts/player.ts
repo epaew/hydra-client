@@ -1,12 +1,18 @@
 import { createContext, createElement, useContext, useState, FC, ReactNode } from 'react';
+import { useHTTPClient } from './http-client';
 
 interface Player {
-  id: string;
+  id: number;
+  name: string;
+  password: string;
+  mark: string;
+}
+interface PlayerForm {
   name: string;
   password: string;
 }
 interface SetPlayer {
-  (player: Player): void;
+  (player: PlayerForm): void;
 }
 
 interface PlayerProviderProps {
@@ -17,9 +23,17 @@ const context = createContext<[Player | undefined, SetPlayer]>([undefined, () =>
 context.displayName = 'PlayerContext';
 
 const PlayerProvider: FC<PlayerProviderProps> = ({ children }) => {
+  const httpClient = useHTTPClient();
   const [player, setPlayer] = useState<Player>();
 
-  return createElement(context.Provider, { value: [player, setPlayer] }, children);
+  const setPlayerFromForm = async (form: PlayerForm) => {
+    const response = await httpClient.post('/api/player', JSON.stringify(form));
+    const result: { id: number, mark: string } = await response.json();
+
+    setPlayer({ id: result.id, name: form.name, password: form.password, mark: result.mark });
+  };
+
+  return createElement(context.Provider, { value: [player, setPlayerFromForm] }, children);
 };
 const usePlayer = () => useContext(context);
 
