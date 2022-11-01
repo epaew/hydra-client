@@ -1,12 +1,7 @@
 import { createContext, createElement, useContext, useState, FC, ReactNode } from 'react';
 import { useHTTPClient } from './http-client';
+import { Player } from '../types';
 
-interface Player {
-  id: number;
-  name: string;
-  password: string;
-  mark: string;
-}
 interface PlayerForm {
   name: string;
   password: string;
