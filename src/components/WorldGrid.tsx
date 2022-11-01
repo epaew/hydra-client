@@ -14,7 +14,7 @@ const Field = styled.pre({
 
 const WorldGrid: FC<WorldGridProps> = () => {
   const [autoRefresh, setAutoRefresh] = useState<boolean>(true);
-  const [refreshInterval, setRefreshInterval] = useState<number>(1.0);
+  const [refreshInterval, setRefreshInterval] = useState<number>(0.5);
   const world = useTextWorld({ autoRefresh, refreshInterval });
 
   return (
@@ -25,7 +25,7 @@ const WorldGrid: FC<WorldGridProps> = () => {
           <TextField
             id="refreshInterval"
             name="refreshInterval"
-            label="更新間隔（秒）"
+            label="画面更新間隔（秒）"
             type="number"
             size="small"
             variant="standard"
