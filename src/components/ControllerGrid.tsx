@@ -1,57 +1,43 @@
-import { useCallback, useEffect, FC } from 'react';
+import { useEffect, FC } from 'react';
 import { Grid, IconButton, Paper, Typography } from '@mui/material';
 import { KeyboardArrowDown, KeyboardArrowLeft, KeyboardArrowRight, KeyboardArrowUp } from '@mui/icons-material';
-import { useHTTPClient, usePlayer } from '../contexts';
+import { useSetPlayerHeadDirection, SetPlayerHeadDirection } from '../hooks';
 
-type Direction = 'North' | 'East' | 'South' | 'West';
-interface ControllerGridProps {
-}
+interface ControllerGridProps {}
 
-const createOnKeyPress = (setPlayerDirection: (direction: Direction) => void) => {
+const useOnKeyDown = (setPlayerHeadDirection: SetPlayerHeadDirection) => {
+  const keyMap = new Map<string, () => void>([
+    ['ArrowLeft',  () => setPlayerHeadDirection('West')],
+    ['ArrowDown',  () => setPlayerHeadDirection('South')],
+    ['ArrowUp',    () => setPlayerHeadDirection('North')],
+    ['ArrowRight', () => setPlayerHeadDirection('East')],
+    ['h',          () => setPlayerHeadDirection('West')],
+    ['j',          () => setPlayerHeadDirection('South')],
+    ['k',          () => setPlayerHeadDirection('North')],
+    ['l',          () => setPlayerHeadDirection('East')],
+    ['w',          () => setPlayerHeadDirection('North')],
+    ['a',          () => setPlayerHeadDirection('West')],
+    ['s',          () => setPlayerHeadDirection('South')],
+    ['d',          () => setPlayerHeadDirection('East')],
+  ]);
+
   return (e: KeyboardEvent) => {
     e.preventDefault();
 
-    switch (e.key) {
-      case 'a':
-      case 'h':
-      case 'ArrowLeft':
-        setPlayerDirection('West');
-        break;
-      case 's':
-      case 'j':
-      case 'ArrowDown':
-        setPlayerDirection('South');
-        break;
-      case 'w':
-      case 'k':
-      case 'ArrowUp':
-        setPlayerDirection('North');
-        break;
-      case 'd':
-      case 'l':
-      case 'ArrowRight':
-        setPlayerDirection('East');
-        break;
-    }
+    const onKeyDown = keyMap.get(e.key);
+    onKeyDown && onKeyDown();
   };
 };
 
 const ControllerGrid: FC<ControllerGridProps> = () => {
-  const httpClient = useHTTPClient();
-  const [player] = usePlayer();
-
-  const setPlayerDirection = useCallback((direction: Direction) => {
-    if (!player) { return; }
-
-    httpClient.post(`/api/player/${player.id}/move`, JSON.stringify({ direction, password: player.password }))
-  }, [httpClient, player]);
-  const onKeyPress = createOnKeyPress(setPlayerDirection);
+  const setPlayerHeadDirection = useSetPlayerHeadDirection();
+  const onKeyDown = useOnKeyDown(setPlayerHeadDirection);
 
   useEffect(() => {
-    document.addEventListener('keydown', onKeyPress);
+    document.addEventListener('keydown', onKeyDown);
 
-    return () => document.removeEventListener('keydown', onKeyPress);
-  }, [onKeyPress]);
+    return () => document.removeEventListener('keydown', onKeyDown);
+  }, [onKeyDown]);
 
   return (
     <Grid item xs={8}>
@@ -59,27 +45,27 @@ const ControllerGrid: FC<ControllerGridProps> = () => {
         <Grid container columns={7}>
           <Grid item xs={3} />
           <Grid item xs={1} sx={{ display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
-            <IconButton color='primary' size='large' onClick={() => setPlayerDirection('North')}>
+            <IconButton color='primary' size='large' onClick={() => setPlayerHeadDirection('North')}>
               <KeyboardArrowUp />
             </IconButton>
           </Grid>
           <Grid item xs={3} />
           <Grid item xs={2} />
           <Grid item xs={1} sx={{ display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
-            <IconButton color='primary' size='large' onClick={() => setPlayerDirection('West')}>
+            <IconButton color='primary' size='large' onClick={() => setPlayerHeadDirection('West')}>
               <KeyboardArrowLeft />
             </IconButton>
           </Grid>
           <Grid item xs={1} />
           <Grid item xs={1} sx={{ display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
-            <IconButton color='primary' size='large' onClick={() => setPlayerDirection('East')}>
+            <IconButton color='primary' size='large' onClick={() => setPlayerHeadDirection('East')}>
               <KeyboardArrowRight />
             </IconButton>
           </Grid>
           <Grid item xs={2} />
           <Grid item xs={3} />
           <Grid item xs={1} sx={{ display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
-            <IconButton color='primary' size='large' onClick={() => setPlayerDirection('South')}>
+            <IconButton color='primary' size='large' onClick={() => setPlayerHeadDirection('South')}>
               <KeyboardArrowDown />
             </IconButton>
           </Grid>
