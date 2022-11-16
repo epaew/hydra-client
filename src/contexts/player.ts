@@ -1,5 +1,5 @@
 import { createContext, createElement, useContext, useState, FC, ReactNode } from 'react';
-import { useHTTPClient } from './http-client';
+import { useHydraAPIClient } from './hydra-api-client';
 import { Player } from '../types';
 
 interface PlayerForm {
@@ -18,12 +18,11 @@ const context = createContext<[Player | undefined, SetPlayer]>([undefined, () =>
 context.displayName = 'PlayerContext';
 
 const PlayerProvider: FC<PlayerProviderProps> = ({ children }) => {
-  const httpClient = useHTTPClient();
+  const hydraAPIClient = useHydraAPIClient();
   const [player, setPlayer] = useState<Player>();
 
   const setPlayerFromForm = async (form: PlayerForm) => {
-    const response = await httpClient.post('/api/player', JSON.stringify(form));
-    const result: { id: number, mark: string } = await response.json();
+    const result = await hydraAPIClient.join(form);
 
     setPlayer({ id: result.id, name: form.name, password: form.password, mark: result.mark });
   };

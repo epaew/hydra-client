@@ -1,4 +1,4 @@
-import { useHTTPClient, usePlayer } from '../contexts';
+import { useHydraAPIClient, usePlayer } from '../contexts';
 import { World } from '../types';
 
 type HeadDirection = World.Player.HeadDirection;
@@ -11,16 +11,17 @@ interface UseSetPlayerHeadDirection {
 }
 
 const useSetPlayerHeadDirection: UseSetPlayerHeadDirection = () => {
-  const httpClient = useHTTPClient();
+  const hydraAPIClient = useHydraAPIClient();
   const [player] = usePlayer();
 
   const setPlayerHeadDirection = (headDirection: HeadDirection) => {
     if (!player) { throw new Error(); }
 
-    httpClient.post(
-      `/api/player/${player.id}/move`,
-      JSON.stringify({ direction: headDirection, password: player.password }),
-    );
+    hydraAPIClient.setPlayerHeadDirection({
+      playerId: player.id,
+      password: player.password,
+      headDirection,
+    });
   };
 
   return setPlayerHeadDirection;
