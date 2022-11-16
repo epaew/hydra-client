@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom/client';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
-import { HTTPClientProvider, PlayerProvider } from './contexts';
+import { HTTPClientProvider, HydraAPIClientProvider, PlayerProvider } from './contexts';
 import { apiHost } from './lib/config';
 
 const root = ReactDOM.createRoot(
@@ -12,9 +12,11 @@ const root = ReactDOM.createRoot(
 root.render(
   <StrictMode>
     <HTTPClientProvider baseURL={apiHost}>
-      <PlayerProvider>
-        <App />
-      </PlayerProvider>
+      <HydraAPIClientProvider baseURL={apiHost}>
+        <PlayerProvider>
+          <App />
+        </PlayerProvider>
+      </HydraAPIClientProvider>
     </HTTPClientProvider>
   </StrictMode>
 );
