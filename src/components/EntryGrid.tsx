@@ -19,9 +19,9 @@ const EntryGrid: FC<EntryGridProps> = () => {
   };
 
   return (
-    <Grid item xs={8}>
+    <Grid item xs={5}>
       <Paper sx={{ display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
-        <Box component="form" onSubmit={onSubmit} sx={{ mt: 1 }}>
+        <Box component="form" onSubmit={onSubmit} sx={{ display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
           <TextField
             id="playername"
             name="playername"
@@ -42,7 +42,7 @@ const EntryGrid: FC<EntryGridProps> = () => {
             variant="standard"
             onChange={e => setPassword(e.target.value)}
           />
-          <Button type="submit" variant="contained" sx={{ ml: 1 }}>Entry</Button>
+          <Button type="submit" variant="contained" sx={{ mt: 1 }}>Entry</Button>
         </Box>
       </Paper>
     </Grid>

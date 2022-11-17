@@ -76,18 +76,18 @@ const WorldGrid: FC<WorldGridProps> = ({ autoRefresh, setAutoRefresh, world }) =
   return (
     <Grid item sx={{ my: 1 }}>
       <Paper sx={{ display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
-        <Field {...world} />
         <Box>
           <ToggleButton
             value='autoRefresh'
             color='primary'
             selected={autoRefresh}
             onChange={() => setAutoRefresh(!autoRefresh)}
-            sx={{ ml: 1 }}
+            sx={{ mb: 1 }}
           >
             {autoRefresh ? '自動更新：有効' : '自動更新：無効'}
           </ToggleButton>
         </Box>
+        <Field {...world} />
       </Paper>
     </Grid>
   );

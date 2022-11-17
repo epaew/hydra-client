@@ -40,7 +40,7 @@ const ControllerGrid: FC<ControllerGridProps> = () => {
   }, [onKeyDown]);
 
   return (
-    <Grid item xs={8}>
+    <Grid item xs={5}>
       <Paper sx={{ display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
         <Grid container columns={7}>
           <Grid item xs={3} />

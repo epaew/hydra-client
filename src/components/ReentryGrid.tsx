@@ -15,7 +15,7 @@ const ReentryGrid: FC<ReentryGridProps> = () => {
   };
 
   return (
-    <Grid item xs={8}>
+    <Grid item xs={5}>
       <Paper sx={{ display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
         <Box component="form" onSubmit={onSubmit} sx={{ mt: 1 }}>
           <Button type="submit" variant="contained" sx={{ ml: 1 }}>Reentry</Button>
