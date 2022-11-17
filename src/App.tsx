@@ -1,6 +1,6 @@
 import { FC, useState } from 'react';
 import { CssBaseline } from '@mui/material';
-import { AppBar, ControllerGrid, EntryGrid, FlexBox, MainContainer, WorldGrid } from './components';
+import { AppBar, ControllerGrid, EntryGrid, FlexBox, MainContainer, ReentryGrid, WorldGrid } from './components';
 import { usePlayer } from './contexts';
 import { useWorld } from './hooks';
 
@@ -23,7 +23,7 @@ const App: FC = () => {
           (() => {
             if (!player) { return <EntryGrid /> }
             if (!isGameOver()) { return <ControllerGrid /> }
-            return "isGameOver";
+            return <ReentryGrid />;
           })()
         }
       </MainContainer>
