@@ -1,7 +1,5 @@
 import { useHydraAPIClient, usePlayer } from '../contexts';
-import { World } from '../types';
-
-type HeadDirection = World.Player.HeadDirection;
+import { HeadDirection } from '../types';
 
 interface SetPlayerHeadDirection {
   (headDirection: HeadDirection): void;

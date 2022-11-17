@@ -1,6 +1,14 @@
 namespace World {
   export namespace Player {
-    export type HeadDirection = 'North' | 'East' | 'South' | 'West';
+    export type Color = `#${string}`;
+    export interface Head {
+      value: '<' | 'v' | '^' | '>';
+      point: Point;
+    }
+    export interface Body {
+      value: string;
+      point: Point;
+    }
   }
 
   export interface Point {
@@ -10,14 +18,17 @@ namespace World {
   export interface Player {
     id: number;
     name: string;
-    headDirection: Player.HeadDirection;
-    bodies: Array<Point>;
+    color: Player.Color;
+    head: Player.Head;
+    bodies: Array<Player.Body>;
   }
   export interface Food {
-    value: number;
+    value: string;
     point: Point;
   }
 }
+
+type HeadDirection = 'North' | 'East' | 'South' | 'West';
 
 interface Player {
   id: number;
@@ -33,4 +44,4 @@ interface World {
   foods: Array<World.Food>;
 }
 
-export type { Player, World };
+export type { HeadDirection, Player, World };
