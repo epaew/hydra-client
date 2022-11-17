@@ -4,18 +4,18 @@ import { useHTTPClient } from '../contexts';
 type World = string;
 interface UseTextWorldProps {
   autoRefresh: boolean;
-  refreshInterval: number;
 }
 interface UseTextWorld {
   (props: UseTextWorldProps): World;
 }
 
-const useTextWorld: UseTextWorld = ({ autoRefresh, refreshInterval }) => {
+const useTextWorld: UseTextWorld = ({ autoRefresh }) => {
+  const refreshInterval = 0.5; // sec
   const [world, setWorld] = useState<World>('');
   const httpClient = useHTTPClient();
 
   useEffect(() => {
-    if (!(autoRefresh && refreshInterval)) return;
+    if (!autoRefresh) return;
 
     const timer = setInterval(
       async () => {
@@ -25,7 +25,7 @@ const useTextWorld: UseTextWorld = ({ autoRefresh, refreshInterval }) => {
       refreshInterval * 1000,
     )
     return () => clearInterval(timer);
-  }, [httpClient, autoRefresh, refreshInterval]);
+  }, [httpClient, autoRefresh]);
 
   return world;
 };

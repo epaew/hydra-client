@@ -11,7 +11,7 @@ const App: FC = () => {
       <CssBaseline />
       <AppBar />
       <MainContainer>
-        <WorldGrid refreshInterval={0.5} />
+        <WorldGrid />
         {player ? <ControllerGrid /> : <EntryGrid />}
       </MainContainer>
     </FlexBox>
