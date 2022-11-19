@@ -46,19 +46,15 @@ const playerBodyChar = (player: HydraAPI.World.Player): World.Player.Body['value
 const convertPlayer = (rawPlayer: HydraAPI.World.Player): World.Player => {
   const [rawHead, ...rawBodies] = rawPlayer.bodies;
 
+  const { id, name } = rawPlayer;
   const color = playerColor(rawPlayer);
+  const mark = playerBodyChar(rawPlayer);
   const head = { value: playerHeadChar(rawPlayer), point: rawHead };
   const bodies = rawBodies.map(rawBody => {
-    return { value: playerBodyChar(rawPlayer), point: rawBody };
+    return { value: mark, point: rawBody };
   });
 
-  return {
-    id: rawPlayer.id,
-    name: rawPlayer.name,
-    color,
-    head,
-    bodies,
-  };
+  return { id, name, color, mark, head, bodies };
 };
 const convertFood = (rawFood: HydraAPI.World.Food): World.Food => {
   return {

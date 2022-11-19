@@ -19,6 +19,7 @@ namespace World {
     id: number;
     name: string;
     color: Player.Color;
+    mark: string;
     head: Player.Head;
     bodies: Array<Player.Body>;
   }

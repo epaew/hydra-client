@@ -13,7 +13,7 @@ const PlayersGrid: FC<{ players: World.Player[] }> = ({ players }) => {
     return (
       <ListItem>
         <ListItemText sx={{ color: player.color }}>
-          {player.name}
+          {`${player.mark}: ${player.name}`}
           {isYou ? ' (you)' : null}
         </ListItemText>
       </ListItem>
