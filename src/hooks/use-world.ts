@@ -81,8 +81,12 @@ const useWorld: UseWorld = ({ autoRefresh }) => {
 
     const timer = setInterval(
       async () => {
-        const rawWorld = await hydraAPIClient.getWorld()
-        setWorld(convert(rawWorld));
+        try {
+          const rawWorld = await hydraAPIClient.getWorld()
+          setWorld(convert(rawWorld));
+        } catch {
+          // Nothing to do
+        }
       },
       refreshInterval * 1000,
     )

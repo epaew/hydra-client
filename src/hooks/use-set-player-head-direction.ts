@@ -1,3 +1,5 @@
+import { useState } from 'react';
+
 import { useHydraAPIClient, usePlayer } from '../contexts';
 import { HeadDirection } from '../types';
 
@@ -5,24 +7,33 @@ interface SetPlayerHeadDirection {
   (headDirection: HeadDirection): void;
 }
 interface UseSetPlayerHeadDirection {
-  (): SetPlayerHeadDirection;
+  (): {
+    setPlayerHeadDirection: SetPlayerHeadDirection,
+    error: Error | null;
+  };
 }
 
 const useSetPlayerHeadDirection: UseSetPlayerHeadDirection = () => {
+  const [error, setError] = useState<Error | null>(null);
   const hydraAPIClient = useHydraAPIClient();
   const { player } = usePlayer();
 
-  const setPlayerHeadDirection = (headDirection: HeadDirection) => {
-    if (!player) { throw new Error(); }
+  const setPlayerHeadDirection = async (headDirection: HeadDirection) => {
+    setError(null);
+    try {
+      if (!player) { throw new Error('Player not found'); }
 
-    hydraAPIClient.setPlayerHeadDirection({
-      playerId: player.id,
-      password: player.password,
-      headDirection,
-    });
+      await hydraAPIClient.setPlayerHeadDirection({
+        playerId: player.id,
+        password: player.password,
+        headDirection,
+      });
+    } catch (e) {
+      setError(e as Error);
+    }
   };
 
-  return setPlayerHeadDirection;
+  return { setPlayerHeadDirection, error };
 };
 
 export { useSetPlayerHeadDirection };

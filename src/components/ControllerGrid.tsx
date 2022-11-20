@@ -1,5 +1,5 @@
 import { useEffect, FC } from 'react';
-import { Grid, IconButton, Paper, Typography } from '@mui/material';
+import { Alert, Grid, IconButton, Paper, Typography } from '@mui/material';
 import { KeyboardArrowDown, KeyboardArrowLeft, KeyboardArrowRight, KeyboardArrowUp } from '@mui/icons-material';
 import { useSetPlayerHeadDirection, SetPlayerHeadDirection } from '../hooks';
 
@@ -30,7 +30,7 @@ const useOnKeyDown = (setPlayerHeadDirection: SetPlayerHeadDirection) => {
 };
 
 const ControllerGrid: FC<ControllerGridProps> = () => {
-  const setPlayerHeadDirection = useSetPlayerHeadDirection();
+  const { setPlayerHeadDirection, error } = useSetPlayerHeadDirection();
   const onKeyDown = useOnKeyDown(setPlayerHeadDirection);
 
   useEffect(() => {
@@ -42,6 +42,7 @@ const ControllerGrid: FC<ControllerGridProps> = () => {
   return (
     <Grid item xs={5}>
       <Paper sx={{ display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
+        {error && <Alert severity="error">{error.message}</Alert>}
         <Grid container columns={7}>
           <Grid item xs={3} />
           <Grid item xs={1} sx={{ display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
