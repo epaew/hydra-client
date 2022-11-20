@@ -1,6 +1,6 @@
 import { World } from './types';
 
-import { SimpleHTTPClient } from '../simple-http-client';
+import { Client as HTTPClient } from '../http';
 
 type JoinProps = {
   name: string;
@@ -20,10 +20,10 @@ type SetPlayerHeadDirectionProps = {
 }
 
 class Client {
-  #httpClient: SimpleHTTPClient;
+  #httpClient: HTTPClient;
 
   constructor(baseURL?: string) {
-    this.#httpClient = new SimpleHTTPClient(baseURL);
+    this.#httpClient = new HTTPClient(baseURL);
   }
 
   async join(props: JoinProps): Promise<JoinResult> {
@@ -31,12 +31,19 @@ class Client {
     const response = await this.#httpClient.post(
       `/api/player`,
       JSON.stringify({ name, password }),
+      {
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+      }
     );
     return response.json();
   }
 
   async getWorld(): Promise<GetWorldResult> {
-    const response = await this.#httpClient.get(`/api/world.json`);
+    const response =
+      await this.#httpClient.get(`/api/world.json`, { headers: { Accept: 'application/json' } });
     return response.json();
   }
 
@@ -45,6 +52,12 @@ class Client {
     await this.#httpClient.post(
       `/api/player/${playerId}/move`,
       JSON.stringify({ direction, password }),
+      {
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+      }
     );
   }
 }
