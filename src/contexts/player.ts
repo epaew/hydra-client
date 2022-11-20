@@ -14,20 +14,37 @@ interface PlayerProviderProps {
   children: ReactNode;
 }
 
-const context = createContext<[Player | undefined, SetPlayer]>([undefined, () => {}]);
+interface PlayerContext {
+  player: Player | null;
+  setPlayer: SetPlayer;
+  error: Error | null;
+}
+
+const context = createContext<PlayerContext>({ player: null, setPlayer: () => {}, error: null });
 context.displayName = 'PlayerContext';
 
 const PlayerProvider: FC<PlayerProviderProps> = ({ children }) => {
   const hydraAPIClient = useHydraAPIClient();
-  const [player, setPlayer] = useState<Player>();
+  const [player, setPlayer] = useState<Player | null>(null);
+  const [error, setError] = useState<Error | null>(null);
 
   const setPlayerFromForm = async (form: PlayerForm) => {
-    const result = await hydraAPIClient.join(form);
+    setError(null);
 
-    setPlayer({ id: result.id, name: form.name, password: form.password, mark: result.mark });
+    try {
+      const result = await hydraAPIClient.join(form);
+
+      setPlayer({ id: result.id, name: form.name, password: form.password, mark: result.mark });
+    } catch (e) {
+      setError(e as Error);
+    }
   };
 
-  return createElement(context.Provider, { value: [player, setPlayerFromForm] }, children);
+  return createElement(
+    context.Provider,
+    { value: { player, setPlayer: setPlayerFromForm, error } },
+    children,
+  );
 };
 const usePlayer = () => useContext(context);
 

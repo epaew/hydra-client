@@ -1,5 +1,5 @@
 import { useState, FC, FormEventHandler } from 'react';
-import { Box, Button, Grid, Paper, TextField } from '@mui/material';
+import { Alert, Box, Button, Grid, Paper, TextField } from '@mui/material';
 import { usePlayer } from '../contexts';
 
 interface EntryGridProps {}
@@ -7,7 +7,7 @@ interface EntryGridProps {}
 const EntryGrid: FC<EntryGridProps> = () => {
   const [playerName, setPlayerName] = useState<string>();
   const [password, setPassword] = useState<string>();
-  const [player, setPlayer] = usePlayer();
+  const { player, setPlayer, error } = usePlayer();
 
   if (player) { return null; }
 
@@ -21,6 +21,7 @@ const EntryGrid: FC<EntryGridProps> = () => {
   return (
     <Grid item xs={5}>
       <Paper sx={{ display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
+        {error && <Alert severity="error">{error.message}</Alert>}
         <Box component="form" onSubmit={onSubmit} sx={{ display: 'flex', alignItems: 'center', flexDirection: 'column' }}>
           <TextField
             id="playername"

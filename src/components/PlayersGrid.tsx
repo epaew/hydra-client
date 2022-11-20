@@ -5,7 +5,7 @@ import { usePlayer } from '../contexts';
 import { World } from '../types';
 
 const PlayersGrid: FC<{ players: World.Player[] }> = ({ players }) => {
-  const [you,] = usePlayer();
+  const { player: you } = usePlayer();
 
   const listItems = players.map(player => {
     const isYou = player.id === you?.id;

@@ -10,7 +10,7 @@ interface UseSetPlayerHeadDirection {
 
 const useSetPlayerHeadDirection: UseSetPlayerHeadDirection = () => {
   const hydraAPIClient = useHydraAPIClient();
-  const [player] = usePlayer();
+  const { player } = usePlayer();
 
   const setPlayerHeadDirection = (headDirection: HeadDirection) => {
     if (!player) { throw new Error(); }

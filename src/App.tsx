@@ -5,7 +5,7 @@ import { usePlayer } from './contexts';
 import { useWorld } from './hooks';
 
 const App: FC = () => {
-  const [player] = usePlayer();
+  const { player } = usePlayer();
   const [autoRefresh, setAutoRefresh] = useState<boolean>(true);
   const world = useWorld({ autoRefresh });
 
