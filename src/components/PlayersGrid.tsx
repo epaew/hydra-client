@@ -11,7 +11,7 @@ const PlayersGrid: FC<{ players: World.Player[] }> = ({ players }) => {
     const isYou = player.id === you?.id;
 
     return (
-      <ListItem>
+      <ListItem key={player.id}>
         <ListItemText sx={{ color: player.color }}>
           {`${player.mark}: ${player.name}`}
           {isYou ? ' (you)' : null}
