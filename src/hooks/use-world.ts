@@ -40,8 +40,7 @@ const playerHeadChar = (player: HydraAPI.World.Player): World.Player.Head['value
   return map[player.headDirection];
 };
 const playerBodyChar = (player: HydraAPI.World.Player): World.Player.Body['value'] => {
-  // NOTE: world.json からは mark が取れないので適当に name[0] を使う
-  return player.name[0];
+  return player.mark;
 };
 const convertPlayer = (rawPlayer: HydraAPI.World.Player): World.Player => {
   const [rawHead, ...rawBodies] = rawPlayer.bodies;

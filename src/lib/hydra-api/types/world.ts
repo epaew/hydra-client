@@ -10,6 +10,7 @@ namespace World {
   export interface Player {
     id: number;
     name: string;
+    mark: string;
     headDirection: Player.HeadDirection;
     bodies: Array<Point>;
   }
