@@ -1,4 +1,4 @@
-import { World } from './types';
+import { Direction, Player, World } from './types';
 
 import { Client as HTTPClient } from '../http';
 
@@ -6,17 +6,14 @@ type JoinProps = {
   name: string;
   password: string;
 };
-type JoinResult = {
-  id: number;
-  mark: string;
-};
+type JoinResult = Player;
 
 type GetWorldResult = World;
 
 type SetPlayerHeadDirectionProps = {
   playerId: number;
   password: string;
-  headDirection: World.Player.HeadDirection;
+  direction: Direction;
 }
 
 class Client {
@@ -38,7 +35,9 @@ class Client {
         },
       }
     );
-    return response.json();
+    const { id, mark } = await response.json();
+
+    return { id, name, mark, password };
   }
 
   async getWorld(): Promise<GetWorldResult> {
@@ -48,7 +47,7 @@ class Client {
   }
 
   async setPlayerHeadDirection(props: SetPlayerHeadDirectionProps): Promise<void> {
-    const { playerId, password, headDirection: direction } = props;
+    const { playerId, password, direction } = props;
     await this.#httpClient.post(
       `/api/player/${playerId}/move`,
       JSON.stringify({ direction, password }),

@@ -29,7 +29,7 @@ namespace World {
   }
 }
 
-type HeadDirection = 'North' | 'East' | 'South' | 'West';
+type Direction = 'North' | 'East' | 'South' | 'West';
 
 interface Player {
   id: number;
@@ -45,4 +45,4 @@ interface World {
   foods: Array<World.Food>;
 }
 
-export type { HeadDirection, Player, World };
+export type { Direction, Player, World };

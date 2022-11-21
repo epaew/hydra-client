@@ -31,7 +31,7 @@ const playerColor = (player: HydraAPI.World.Player): World.Player.Color => {
   return `#${rgb.map(n => n.toString(16).padStart(2, '0')).join('')}`;
 };
 const playerHeadChar = (player: HydraAPI.World.Player): World.Player.Head['value'] => {
-  const map: Record<HydraAPI.World.Player.HeadDirection, World.Player.Head['value']> = {
+  const map: Record<HydraAPI.Direction, World.Player.Head['value']> = {
     'North': '^',
     'East': '>',
     'South': 'v',

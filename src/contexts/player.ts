@@ -32,9 +32,7 @@ const PlayerProvider: FC<PlayerProviderProps> = ({ children }) => {
     setError(null);
 
     try {
-      const result = await hydraAPIClient.join(form);
-
-      setPlayer({ id: result.id, name: form.name, password: form.password, mark: result.mark });
+      setPlayer(await hydraAPIClient.join(form));
     } catch (e) {
       setError(e as Error);
     }

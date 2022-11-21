@@ -1,17 +1,16 @@
-namespace World {
-  export namespace Player {
-    export type HeadDirection = 'North' | 'East' | 'South' | 'West';
-  }
+import { Direction } from './direction';
 
-  export interface Point {
-    x: number;
-    y: number;
-  }
+interface Point {
+  x: number;
+  y: number;
+}
+
+namespace World {
   export interface Player {
     id: number;
     name: string;
     mark: string;
-    headDirection: Player.HeadDirection;
+    headDirection: Direction;
     bodies: Array<Point>;
   }
   export interface Food {
