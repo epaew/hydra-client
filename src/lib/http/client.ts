@@ -37,7 +37,7 @@ class Client {
     return response;
   }
 
-  async #throwHTTPError(response: Response) {
+  async #throwHTTPError(response: Response): Promise<never> {
     const { url, status, headers } = response;
     const body = await response.text();
 
